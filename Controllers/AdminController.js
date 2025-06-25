@@ -274,7 +274,7 @@ const Contacted = asynchandler(async (req, res) => {
     try {
         const { id } = req.params
         const { IsContacted } = req.params
-        const Contact = await ContactUsModel.find(id);
+        const Contact = await ContactUsModel.findById(id);
 
         if (!Contact) return response.notFoundError(res, 'Contact Not Found')
 

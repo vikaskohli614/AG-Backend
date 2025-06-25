@@ -4,6 +4,8 @@ const cloudinary = require('../utils/cloudinary');
 const { ServiceModel } = require("../Models/ServiceModel");
 const { BlogModel } = require("../Models/BlogModel");
 const { ContactUsModel } = require("../Models/ContactUsModel");
+const TermsandconditionsModel = require("../Models/TermsandconditionsModel");
+const PrivacyPolicysModel = require("../Models/PrivacyPolicysModel");
 
 
 const AddServices = asynchandler(async (req, res) => {
@@ -284,9 +286,79 @@ const DeleteContact = asynchandler(async (req, res) => {
     }
 })
 
+
+const CreateOrUpdateTermsAndCondition = asynchandler(async (req, res) => {
+    try {
+        const { Termsandcondition } = req.body;
+        if (!Termsandcondition) return response.validationError(res, 'Termsandcondition is required');
+
+        let Termsandconditions = await TermsandconditionsModel.findOne();
+
+        if (Termsandconditions) {
+            Termsandconditions.Termsandcondition = Termsandcondition;
+            const updatedTerms = await Termsandconditions.save();
+            return response.successResponse(res, updatedTerms, "Terms and Conditions updated successfully");
+        }
+
+        const newTermsandconditions = new TermsandconditionsModel({ Termsandcondition });
+        const createdTerms = await newTermsandconditions.save();
+        return response.successResponse(res, createdTerms, "Terms and Conditions created successfully");
+
+    } catch (error) {
+        console.log(error);
+        return response.internalServerError(res, 'Internal server error');
+    }
+});
+
+
+const GetTermsandcondition = asynchandler(async (req, res) => {
+    try {
+        const Termsandcondition = await TermsandconditionsModel.findOne();
+        return response.successResponse(res, Termsandcondition, 'Get Termsandcondition')
+    } catch (error) {
+        console.log(error)
+        return response.internalServerError(res, 'Internal server error')
+    }
+})
+
+
+const CreateOrUpdatePrivacyPolicy = asynchandler(async (req, res) => {
+    try {
+        const { PrivacyPolicy } = req.body;
+        if (!PrivacyPolicy) return response.validationError(res, 'PrivacyPolicy is required');
+
+        let privacyPolicyData = await PrivacyPolicysModel.findOne();
+
+        if (privacyPolicyData) {
+            privacyPolicyData.PrivacyPolicy = PrivacyPolicy;
+            const updatedPolicy = await privacyPolicyData.save();
+            return response.successResponse(res, updatedPolicy, "Privacy Policy updated successfully");
+        }
+        const newPrivacyPolicy = new PrivacyPolicysModel({ PrivacyPolicy });
+        const createdPolicy = await newPrivacyPolicy.save();
+        return response.successResponse(res, createdPolicy, "Privacy Policy created successfully");
+
+    } catch (error) {
+        console.log(error);
+        return response.internalServerError(res, 'Internal server error');
+    }
+});
+
+const GetPrivacyPolicy = asynchandler(async (req, res) => {
+    try {
+        const privacyPolicy = await PrivacyPolicysModel.findOne();
+        return response.successResponse(res, privacyPolicy, 'Get Privacy policy data')
+    } catch (error) {
+        console.log(error);
+        return response.internalServerError(res, 'Internal server error');
+    }
+})
+
+
 module.exports = {
     AddServices, GetAllService, GetAService, UpdateService, DeleteService,
     AddBlog, GetAllBlog, GetABlog, UpdateBlog, DeleteBlog,
-    AddContactUs, GetAllContact, DeleteContact
+    AddContactUs, GetAllContact, DeleteContact,
+    CreateOrUpdateTermsAndCondition,GetTermsandcondition,CreateOrUpdatePrivacyPolicy,GetPrivacyPolicy
 }
 

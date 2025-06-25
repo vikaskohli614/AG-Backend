@@ -233,7 +233,7 @@ const DeleteBlog = asynchandler(async (req, res) => {
 
 const AddContactUs = asynchandler(async (req, res) => {
     try {
-        const { Name, Email, Mobile,Service, Message } = req.body
+        const { Name, Email, Mobile, Service, Message } = req.body
 
         if (!Name) return response.validationError(res, 'Name is required');
         if (!Email) return response.validationError(res, 'Email is required');
@@ -264,6 +264,25 @@ const GetAllContact = asynchandler(async (req, res) => {
         const Contact = await ContactUsModel.find();
 
         return response.successResponse(res, Contact, 'Get All Contact us')
+    } catch (error) {
+        console.log(error);
+        return response.internalServerError(res, error)
+    }
+})
+
+const Contacted = asynchandler(async (req, res) => {
+    try {
+        const { id } = req.params
+        const { IsContacted } = req.params
+        const Contact = await ContactUsModel.find(id);
+
+        if (!Contact) return response.notFoundError(res, 'Contact Not Found')
+
+        Contact.IsContacted = IsContacted
+
+        await Contact.save()
+
+        return response.successResponse(res, Contact, 'Contact IsContacted status updated')
     } catch (error) {
         console.log(error);
         return response.internalServerError(res, error)
@@ -358,7 +377,7 @@ const GetPrivacyPolicy = asynchandler(async (req, res) => {
 module.exports = {
     AddServices, GetAllService, GetAService, UpdateService, DeleteService,
     AddBlog, GetAllBlog, GetABlog, UpdateBlog, DeleteBlog,
-    AddContactUs, GetAllContact, DeleteContact,
-    CreateOrUpdateTermsAndCondition,GetTermsandcondition,CreateOrUpdatePrivacyPolicy,GetPrivacyPolicy
+    AddContactUs, GetAllContact, Contacted, DeleteContact,
+    CreateOrUpdateTermsAndCondition, GetTermsandcondition, CreateOrUpdatePrivacyPolicy, GetPrivacyPolicy
 }
 

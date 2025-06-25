@@ -1,4 +1,4 @@
-const { AddServices, GetAllService, GetAService, UpdateService, DeleteService, AddBlog, GetAllBlog, GetABlog, UpdateBlog, DeleteBlog, AddContactUs, GetAllContact, DeleteContact, CreateOrUpdateTermsAndCondition, GetTermsandcondition, CreateOrUpdatePrivacyPolicy, GetPrivacyPolicy } = require("../Controllers/AdminController");
+const { AddServices, GetAllService, GetAService, UpdateService, DeleteService, AddBlog, GetAllBlog, GetABlog, UpdateBlog, DeleteBlog, AddContactUs, GetAllContact, DeleteContact, CreateOrUpdateTermsAndCondition, GetTermsandcondition, CreateOrUpdatePrivacyPolicy, GetPrivacyPolicy, Contacted } = require("../Controllers/AdminController");
 const multer = require("../utils/multer");
 const router = require("express").Router();
 
@@ -20,6 +20,7 @@ router.put("/UpdateBlog/:id", upload, UpdateBlog);
 router.delete("/DeleteBlog/:id", DeleteBlog);
 router.post("/AddContactUs", AddContactUs);
 router.get("/GetAllContact", GetAllContact);
+router.put("/Contacted/:id", Contacted);
 router.delete("/DeleteContact/:id", DeleteContact);
 router.post("/CreateOrUpdateTermsAndCondition", CreateOrUpdateTermsAndCondition);
 router.get("/GetTermsandcondition", GetTermsandcondition);

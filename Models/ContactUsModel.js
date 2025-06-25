@@ -21,6 +21,10 @@ const ContactUsSchema = new mongoose.Schema({
         type: String,
         require: true
     },
+    IsContacted: {
+        type: Boolean,
+        default: false
+    }
 }, { timestamps: true });
 
 const ContactUsModel = mongoose.model('ContactUs', ContactUsSchema);
